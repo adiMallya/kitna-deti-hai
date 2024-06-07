@@ -7,13 +7,15 @@ import {
   Query,
   Patch,
   Delete,
-  NotFoundException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dtos/update-user.dto';
+import { UserDto } from 'src/users/dtos/user.dto';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
 
 @Controller('auth')
+@Serialize(UserDto) //To exclude password in response
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
@@ -23,7 +25,7 @@ export class UsersController {
   }
 
   @Get('/:id')
-  async findUser(@Param('id') id: string) {
+  findUser(@Param('id') id: string) {
     return this.usersService.findOne(parseInt(id));
   }
 
