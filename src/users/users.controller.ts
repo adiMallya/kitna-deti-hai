@@ -8,6 +8,7 @@ import {
   Patch,
   Delete,
   Session,
+  BadRequestException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
@@ -15,6 +16,8 @@ import { UpdateUserDto } from './dtos/update-user.dto';
 import { UserDto } from 'src/users/dtos/user.dto';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { AuthService } from './auth.service';
+import { CurrentUser } from './decorators/current-user.decorator';
+import { User } from './user.entity';
 
 @Controller('auth')
 @Serialize(UserDto) //To exclude password in response
@@ -39,8 +42,11 @@ export class UsersController {
   }
 
   @Get('/whoami')
-  whoAmI(@Session() session: any) {
-    return this.usersService.findOne(session.userId);
+  whoAmI(@CurrentUser() user: User) {
+    if(!user){
+      throw new BadRequestException();
+    }
+    return user;
   }
 
   @Post('/logout')
