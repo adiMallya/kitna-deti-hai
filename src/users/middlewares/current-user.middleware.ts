@@ -1,7 +1,7 @@
 import { NestMiddleware, Injectable } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import { User } from 'src/users/user.entity';
-import { UsersService } from 'src/users/users.service';
+import { User } from '../user.entity';
+import { UsersService } from '../users.service';
 
 // To add currUser prop to default Request interface of express library
 declare global{
