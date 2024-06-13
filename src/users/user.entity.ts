@@ -1,5 +1,11 @@
 import { Report } from '../reports/report.entity';
-import { Entity, Column, PrimaryGeneratedColumn, AfterUpdate, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  AfterUpdate,
+  OneToMany,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -12,7 +18,7 @@ export class User {
   @Column({ default: true })
   isAdmin: boolean;
 
-  @OneToMany(() => Report, (report) => report.user)
+  @OneToMany(() => Report, (report) => report.user, { cascade: true })
   reports: Report[];
 
   @AfterUpdate()
